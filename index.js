@@ -40,7 +40,7 @@ server.patch(`${CARRO}/:id`, async (req, res) => {
             marca: marca,
             modelo: modelo,
             ano: ano,
-            valor: valor 
+            valor: valor,
         },
         {
             where: { id: id }
@@ -56,19 +56,11 @@ server.get(`${CARRO}`, async (req, res) => {
     let id = req.query.id;
     let marca = req.query.marca;
     let modelo = req.query.modelo;
-    let ano = req.query.ano;
-    let valor = req.query.valor;
+    let anoInicial = req.query.anoInicial;
+    let valorInicial = req.query.valorInicial;
 
     if(id){
         let carros = await Carro.findByPk(id);
-        res.json(carros);
-
-    }else if(marca){
-        let carros = await Carro.findAll(
-            {
-                where: { marca: marca }
-            }
-        );
         res.json(carros);
 
     }else if(marca && modelo){
@@ -79,18 +71,26 @@ server.get(`${CARRO}`, async (req, res) => {
         );
         res.json(carros);
 
-    }else if(ano){
+    }else if(marca){
         let carros = await Carro.findAll(
             {
-                where: { ano: {[Op.gte]: ano }}
+                where: { marca: marca }
             }
         );
         res.json(carros);
 
-    }else if(valor){
+    }else if(anoInicial){
         let carros = await Carro.findAll(
             {
-                where: { valor: {[Op.gte]: valor }}
+                where: { ano: {[Op.gte]: anoInicial }}
+            }
+        );
+        res.json(carros);
+
+    }else if(valorInicial){
+        let carros = await Carro.findAll(
+            {
+                where: { valor: {[Op.gte]: valorInicial }}
             }
         );
         res.json(carros);
